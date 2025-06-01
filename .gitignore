@@ -1,0 +1,39 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/ 
+venv/
+
+# Conda environments
+# If your Conda env was in the project root, this prevents it from being pushed.
+# It's good practice even if your env is in Conda's default location.
+.conda/
+envs/
+
+# Streamlit specific
+.streamlit/
+*.tmp
+*.log
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE specific (e.g., VS Code)
+.vscode/
+
+# Data/Output
+data/medical.db
+output/ # If your app generates output files
+chroma_db/
+*.db   # Common for local databases (e.g., SQLite .db files)
