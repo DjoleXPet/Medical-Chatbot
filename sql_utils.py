@@ -32,10 +32,12 @@ Instructions for SQL Generation:
 - Prioritize retrieving relevant information based on the question.
 - **INSTITUTION TYPE MAPPING:** When the user refers to institution types using common terms like 'hospitals', 'clinics', 'ambulances', 'medical centers', 'private hospitals', 'public clinics', etc., understand that these refer to the `institutions.type` column. Remember that the ONLY valid values for 'type' in the database are strictly 'Private' or 'Public'. Map the user's intent to one of these two values.
 
-- **COLUMN SELECTION RULE:**
-  - If the user's question asks for specific columns (e.g., "What is John Doe's specialization?"), select ONLY those requested columns.
-  - If the user's question is general (e.g., "Tell me about Dr. John Doe," "List all doctors," "Who is this institution?"), **ALWAYS select ALL columns (`SELECT *`)** from the relevant table(s) to provide complete details. Do not restrict columns unless explicitly asked.
-
+- **ULTIMATE COLUMN SELECTION RULE:**
+  - **FOR EVERY QUERY, ALWAYS select ALL columns FROM ALL TABLES INVOLVED IN THE QUERY.**
+  - **Specifically, if a JOIN is used, ensure the SELECT clause effectively covers all columns from both (or more) joined tables.**
+  - **Your SELECT clause must be `SELECT *` (or explicitly list all columns from all relevant tables if `SELECT *` is not supported by the specific query structure, though `SELECT *` is generally preferred here).**
+  - **NEVER filter or restrict which columns are returned.**
+  
 - Return ONLY valid SQLite SQL code. Do NOT include any additional words, explanations, markdown formatting (like ```sql), or prefixes (like "SQL:", "sqlite:", "SQL"). The response MUST be just the SQL query itself.
 """
     prompt = f"""Given the following SQL schema, conversation history, and instructions:
@@ -48,7 +50,7 @@ SQL Query:"""
     response = llm_model.invoke(prompt)
     
     sql_query = response.strip()
-    sql_query = sql_query.replace("```sql", "").replace("```", "").replace("sqlite", "").replace("SQL:", "").strip()
+    sql_query = sql_query.replace("```", "").replace("sqlite", "").replace("SQL:", "").strip()
     if sql_query.lower().startswith("sql"):
         sql_query = sql_query[3:].strip()
     

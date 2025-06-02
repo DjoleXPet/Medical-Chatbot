@@ -50,7 +50,7 @@ cd Medical-Chatbot
 #### b. Create `.env` File
 Create a file named `.env` in the root of your project directory (`Medical-Chatbot/`) and add your Google Gemini API key:
 ```
-GOOGLE_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
 ```
 
 
