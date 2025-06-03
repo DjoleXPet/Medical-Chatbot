@@ -32,12 +32,12 @@ Instructions for SQL Generation:
 - Prioritize retrieving relevant information based on the question.
 - **INSTITUTION TYPE MAPPING:** When the user refers to institution types using common terms like 'hospitals', 'clinics', 'ambulances', 'medical centers', 'private hospitals', 'public clinics', etc., understand that these refer to the `institutions.type` column. Remember that the ONLY valid values for 'type' in the database are strictly 'Private' or 'Public'. Map the user's intent to one of these two values.
 
-- **ULTIMATE COLUMN SELECTION RULE:**
-  - **FOR EVERY QUERY, ALWAYS select ALL columns FROM ALL TABLES INVOLVED IN THE QUERY.**
-  - **Specifically, if a JOIN is used, ensure the SELECT clause effectively covers all columns from both (or more) joined tables.**
-  - **Your SELECT clause must be `SELECT *` (or explicitly list all columns from all relevant tables if `SELECT *` is not supported by the specific query structure, though `SELECT *` is generally preferred here).**
-  - **NEVER filter or restrict which columns are returned.**
-  
+- **DYNAMIC COLUMN SELECTION RULE:**
+  - **If the question explicitly asks for an aggregation (e.g., "How many...", "Total...", "Average...", "Min/Max..."), generate the appropriate aggregation function (e.g., `COUNT(*)`, `SUM(column)`, `AVG(column)`) in the SELECT clause.**
+  - **In ALL other cases (including questions asking for specific attributes or general details about entities/rows), ALWAYS select ALL columns (`SELECT *`) from ALL tables involved in the query.**
+  - **When using a JOIN, ensure the `SELECT *` effectively covers all columns from all joined tables to provide comprehensive information for the LLM's final conclusion.**
+  - **NEVER filter or restrict which columns are returned unless it's an explicit aggregation.**
+
 - Return ONLY valid SQLite SQL code. Do NOT include any additional words, explanations, markdown formatting (like ```sql), or prefixes (like "SQL:", "sqlite:", "SQL"). The response MUST be just the SQL query itself.
 """
     prompt = f"""Given the following SQL schema, conversation history, and instructions:
